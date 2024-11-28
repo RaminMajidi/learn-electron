@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, dialog } from "electron";
 import * as path from "path";
 
 function createWindow() {
@@ -11,23 +11,50 @@ function createWindow() {
     width: 800,
     title: "first page",
     backgroundColor: "#fcba03",
-    show:false,
-    resizable:false
+    show: false,
+    resizable: false,
+    frame: true,
+    transparent: true,
+    opacity: 1,
+    alwaysOnTop: false,
   });
 
-  const child = new BrowserWindow({
-    width: 250,
-    height: 250,
-    parent: mainWindow,
-    modal: true,
-    show: false,
-  });
+  // const child = new BrowserWindow({
+  //   width: 250,
+  //   height: 250,
+  //   parent: mainWindow,
+  //   modal: true,
+  //   show: false,
+  // });
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, "index.html"));
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();
-    child.show();
+    // child.show();
+  });
+  mainWindow.webContents.on("did-finish-load", () => {
+    // dialog
+    //   .showOpenDialog(mainWindow, {
+    //     title: "select New Item",
+    //     buttonLabel: "Selaetc Item",
+    //     defaultPath: app.getPath("desktop"),
+    //     properties: ["createDirectory", "promptToCreate"],
+    //   })
+    //   .then((res) => {
+    //     console.log(res.filePaths);
+    //   });
+
+
+    dialog.showMessageBox(mainWindow,{
+      title:"Message Box Title",
+      message:"This Is message of Message Box",
+      detail:"This Is Details of Message Box",
+      buttons:["Yes","No","Cancel"]
+    }).then((res)=>{
+      console.log(res);
+    })
+
   });
 
   // Open the DevTools.
