@@ -1,14 +1,21 @@
 {
   "name": "learn-electron",
   "version": "1.0.0",
-  "main": "main.js",
+  "main": "build/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "npm run build && electron ./build/main.js",
+    "build": "tsc",
+    "watch":"tsc -w"
   },
   "author": "RaminMajidi",
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "electron": "^33.2.1"
+    "electron": "^33.2.1",
+    "electron-vite": "^2.3.0"
+  },
+  "dependencies": {
+    "copyfiles": "^2.4.1",
+    "typescript": "^5.7.2"
   }
 }
