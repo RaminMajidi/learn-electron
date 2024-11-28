@@ -9,12 +9,26 @@ function createWindow() {
       preload: path.join(__dirname, "preload.js"),
     },
     width: 800,
-    title:'first page',
-    backgroundColor:'#fcba03',
+    title: "first page",
+    backgroundColor: "#fcba03",
+    show:false,
+    resizable:false
+  });
+
+  const child = new BrowserWindow({
+    width: 250,
+    height: 250,
+    parent: mainWindow,
+    modal: true,
+    show: false,
   });
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, "index.html"));
+  mainWindow.on("ready-to-show", () => {
+    mainWindow.show();
+    child.show();
+  });
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
