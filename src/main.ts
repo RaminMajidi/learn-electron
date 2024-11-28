@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog } from "electron";
+import { app, BrowserWindow, dialog, globalShortcut } from "electron";
 import * as path from "path";
 
 function createWindow() {
@@ -33,6 +33,12 @@ function createWindow() {
     mainWindow.show();
     // child.show();
   });
+
+  globalShortcut.register("CommandOrControl + F", () => {
+    console.log("User pressed : Control + F");
+    globalShortcut.unregister("CommandOrControl + F");
+  });
+
   mainWindow.webContents.on("did-finish-load", () => {
     // dialog
     //   .showOpenDialog(mainWindow, {
@@ -44,17 +50,14 @@ function createWindow() {
     //   .then((res) => {
     //     console.log(res.filePaths);
     //   });
-
-
-    dialog.showMessageBox(mainWindow,{
-      title:"Message Box Title",
-      message:"This Is message of Message Box",
-      detail:"This Is Details of Message Box",
-      buttons:["Yes","No","Cancel"]
-    }).then((res)=>{
-      console.log(res);
-    })
-
+    //   dialog.showMessageBox(mainWindow,{
+    //     title:"Message Box Title",
+    //     message:"This Is message of Message Box",
+    //     detail:"This Is Details of Message Box",
+    //     buttons:["Yes","No","Cancel"]
+    //   }).then((res)=>{
+    //     console.log(res);
+    //   })
   });
 
   // Open the DevTools.
