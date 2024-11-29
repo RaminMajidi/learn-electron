@@ -1,5 +1,53 @@
-import { app, BrowserWindow, dialog, globalShortcut } from "electron";
+import {
+  app,
+  BrowserWindow,
+  dialog,
+  globalShortcut,
+  Menu,
+  MenuItem,
+} from "electron";
 import * as path from "path";
+
+// const mainMenu: Menu = new Menu();
+// const mainMenuItem = new MenuItem({
+//   label: "Home",
+//   submenu: [{ label: "item1" }, { label: "item2" }, { label: "item3" }],
+// });
+// mainMenu.append(mainMenuItem);
+
+const mainMenu = Menu.buildFromTemplate([
+  {
+    label: "Home",
+    submenu: [
+      { label: "item1", enabled: false },
+      {
+        label: "item2",
+        click: () => {
+          console.log("Item 2 from home is click");
+        },
+      },
+      {
+        label: "item3",
+        accelerator: "shift + f",
+        click: () => {
+          console.log("Item 3 from home is click");
+        },
+      },
+      {
+        label: "item4",
+        role: "togglefullscreen",
+      },
+    ],
+  },
+  {
+    label: "about",
+    submenu: [{ label: "item1" }, { label: "item2" }, { label: "item3" }],
+  },
+  {
+    label: "Edit",
+    submenu: [{ label: "item1" }, { label: "item2" }, { label: "item3" }],
+  },
+]);
 
 function createWindow() {
   // Create the browser window.
@@ -13,10 +61,10 @@ function createWindow() {
     backgroundColor: "#fcba03",
     show: false,
     resizable: false,
-    frame: true,
-    transparent: true,
-    opacity: 1,
-    alwaysOnTop: false,
+    // frame: false,
+    // transparent: true,
+    // opacity: 0.5,
+    // alwaysOnTop: true,
   });
 
   // const child = new BrowserWindow({
@@ -29,6 +77,7 @@ function createWindow() {
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, "index.html"));
+  mainWindow.setMenu(mainMenu);
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();
     // child.show();
