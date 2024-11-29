@@ -1,10 +1,13 @@
-import { app, BrowserWindow, dialog, globalShortcut } from "electron";
-import mainMenu from "./menu";
+import { app, BrowserWindow, dialog, globalShortcut, Tray } from "electron";
+import mainMenu from "./components/menu";
 import * as path from "path";
+import createAppTray from "./utils/createAppTray";
+
+export let mainWindow: BrowserWindow;
 
 function createWindow() {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -27,6 +30,8 @@ function createWindow() {
   //   modal: true,
   //   show: false,
   // });
+
+  createAppTray();
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, "index.html"));
