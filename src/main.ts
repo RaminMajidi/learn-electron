@@ -1,6 +1,7 @@
 import {
   app,
   BrowserWindow,
+  desktopCapturer,
   dialog,
   globalShortcut,
   powerMonitor,
@@ -24,6 +25,7 @@ function createWindow() {
     title: "first page",
     backgroundColor: "#fcba03",
     show: false,
+    alwaysOnTop: true
   });
 
   createAppTray();
@@ -34,6 +36,9 @@ function createWindow() {
 
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();
+    setTimeout(() => {
+      takeScreenShot();
+    }, 2000)
   });
 
   // cookie session
@@ -101,6 +106,16 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
+
+
+function takeScreenShot() {
+  desktopCapturer.getSources({
+    types: ["screen"],
+    thumbnailSize: { width: 1366, height: 768 }
+  }).then(res => {
+    mainWindow.webContents.send('screenshot-channel', res[0].thumbnail.toDataURL());
+  })
+}
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.

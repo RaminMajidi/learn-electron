@@ -5,27 +5,27 @@
 // Use preload.js to selectively enable features
 // needed in the renderer process.
 
-const btnOpenResume = <HTMLButtonElement>document.getElementById("openResume");
-const btnCloseResume = <HTMLButtonElement>document.getElementById("closeResume");
+// const btnOpenResume = <HTMLButtonElement>document.getElementById("openResume");
+// const btnCloseResume = <HTMLButtonElement>document.getElementById("closeResume");
 
-class resumeWindow {
-  private win: Window | null = null;
-  open() {
-    this.win = window.open(
-      "https://ramindev01.vercel.app/",
-      "_blank",
-      "width=600,height=800,alwaysOnTop=true"
-    );
-  }
-  close() {
-    if (this.win) {
-      this.win.close();
-    }
-  }
-}
+// class resumeWindow {
+//   private win: Window | null = null;
+//   open() {
+//     this.win = window.open(
+//       "https://ramindev01.vercel.app/",
+//       "_blank",
+//       "width=600,height=800,alwaysOnTop=true"
+//     );
+//   }
+//   close() {
+//     if (this.win) {
+//       this.win.close();
+//     }
+//   }
+// }
 
-const myResume = new resumeWindow();
+// const myResume = new resumeWindow();
 
-btnOpenResume.addEventListener("click", () => myResume.open());
+// btnOpenResume.addEventListener("click", () => myResume.open());
 
-btnCloseResume.addEventListener("click", () => myResume.close());
+// btnCloseResume.addEventListener("click", () => myResume.close());
