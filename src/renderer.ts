@@ -5,10 +5,29 @@
 // Use preload.js to selectively enable features
 // needed in the renderer process.
 
-const btnGetResume = <HTMLButtonElement>(
-  document.getElementById("getResume")
+const btnOpenResume = <HTMLButtonElement>document.getElementById("openResume");
+const btnCloseResume = <HTMLButtonElement>(
+  document.getElementById("closeResume")
 );
 
-btnGetResume.addEventListener("click", function () {
-  window.open('https://ramindev01.vercel.app/','_blank');
-});
+class resumeWindow {
+  private win: Window | null = null;
+  open() {
+    this.win = window.open(
+      "https://ramindev01.vercel.app/",
+      "_blank",
+      "width=600,height=800,alwaysOnTop=true"
+    );
+  }
+  close() {
+    if (this.win) {
+      this.win.close();
+    }
+  }
+}
+
+const myResume = new resumeWindow();
+
+btnOpenResume.addEventListener("click", () => myResume.open());
+
+btnCloseResume.addEventListener("click", () => myResume.close());
