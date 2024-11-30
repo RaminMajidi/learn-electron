@@ -1,6 +1,5 @@
 import { app, Menu, Tray } from "electron";
 import { join } from "path";
-import mainMenu from "../components/menu";
 import { mainWindow } from "../main";
 
 const trayMenu = Menu.buildFromTemplate([
