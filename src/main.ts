@@ -24,7 +24,6 @@ function createWindow() {
     title: "first page",
     backgroundColor: "#fcba03",
     show: false,
-    resizable: false,
   });
 
   createAppTray();

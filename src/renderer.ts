@@ -6,9 +6,7 @@
 // needed in the renderer process.
 
 const btnOpenResume = <HTMLButtonElement>document.getElementById("openResume");
-const btnCloseResume = <HTMLButtonElement>(
-  document.getElementById("closeResume")
-);
+const btnCloseResume = <HTMLButtonElement>document.getElementById("closeResume");
 
 class resumeWindow {
   private win: Window | null = null;
