@@ -4,6 +4,7 @@ import {
   dialog,
   globalShortcut,
   powerMonitor,
+  session,
 } from "electron";
 import mainMenu from "./components/menu";
 import * as path from "path";
@@ -36,23 +37,40 @@ function createWindow() {
     mainWindow.show();
   });
 
-
-    powerMonitor.on("suspend", () => {
-      console.log("This is suspend event on powerMonitor");
+  // cookie session
+  session.defaultSession.cookies
+    .set({
+      url: "http://localhost",
+      name: "FullName",
+      value: "ramin Majidi",
+    })
+    .then((res) => {
+      console.log("set cookie response :", res);
+      session.defaultSession.cookies.get({}).then((data) => {
+        console.log("data :", data);
+      });
     });
+  // *****
 
-    powerMonitor.on("resume", () => {
-      // if (mainWindow == null) {
-      //   createWindow();
-      // }
-      console.log("This is resume event on powerMonitor");
-    });
+  // powerMonitor session
+  powerMonitor.on("suspend", () => {
+    console.log("This is suspend event on powerMonitor");
+  });
 
+  powerMonitor.on("resume", () => {
+    // if (mainWindow == null) {
+    //   createWindow();
+    // }
+    console.log("This is resume event on powerMonitor");
+  });
+  // *****
 
+  // globalShortcut session
   globalShortcut.register("CommandOrControl + F", () => {
     console.log("User pressed : Control + F");
     globalShortcut.unregister("CommandOrControl + F");
   });
+  // *******
 
   mainWindow.webContents.on("did-finish-load", () => {
     // showDialog();
