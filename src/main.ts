@@ -1,4 +1,10 @@
-import { app, BrowserWindow, dialog, globalShortcut } from "electron";
+import {
+  app,
+  BrowserWindow,
+  dialog,
+  globalShortcut,
+  powerMonitor,
+} from "electron";
 import mainMenu from "./components/menu";
 import * as path from "path";
 import createAppTray from "./utils/createAppTray";
@@ -30,14 +36,27 @@ function createWindow() {
     mainWindow.show();
   });
 
+
+    powerMonitor.on("suspend", () => {
+      console.log("This is suspend event on powerMonitor");
+    });
+
+    powerMonitor.on("resume", () => {
+      // if (mainWindow == null) {
+      //   createWindow();
+      // }
+      console.log("This is resume event on powerMonitor");
+    });
+
+
   globalShortcut.register("CommandOrControl + F", () => {
     console.log("User pressed : Control + F");
     globalShortcut.unregister("CommandOrControl + F");
   });
 
   mainWindow.webContents.on("did-finish-load", () => {
-    showDialog();
-    messageBox();
+    // showDialog();
+    // messageBox();
   });
 
   // Open the DevTools.
