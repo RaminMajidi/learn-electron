@@ -1,0 +1,21 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;  
+}
+
+body{
+    padding: 1rem;
+}
+
+button{
+    outline: none;
+    border: none;
+    padding: .5rem 1rem;
+    background: #000;
+    color: #fcba03;
+    border-radius: .3rem;
+    font-weight: 600;
+    margin: 1rem;
+    cursor: pointer;
+}

@@ -4,3 +4,11 @@
 // nodeIntegration is set to true in webPreferences.
 // Use preload.js to selectively enable features
 // needed in the renderer process.
+
+const btnGetResume = <HTMLButtonElement>(
+  document.getElementById("getResume")
+);
+
+btnGetResume.addEventListener("click", function () {
+  window.open('https://ramindev01.vercel.app/','_blank');
+});

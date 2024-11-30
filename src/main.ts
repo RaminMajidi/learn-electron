@@ -30,7 +30,7 @@ function createWindow() {
   createAppTray();
 
   // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, "index.html"));
+  mainWindow.loadFile("../index.html");
   mainWindow.setMenu(mainMenu);
 
   mainWindow.on("ready-to-show", () => {
