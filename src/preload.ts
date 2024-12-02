@@ -19,6 +19,23 @@ window.addEventListener("DOMContentLoaded", () => {
     );
   }
 
+
+  const btnGetUpTime = <HTMLButtonElement>document.getElementById('btnGetUpTime');
+  btnGetUpTime.addEventListener('click', () => {
+    console.log("Up Time : ", process.uptime());
+  });
+
+  const btnCpuUsage = <HTMLButtonElement>document.getElementById('btnCpuUsage');
+  btnCpuUsage.addEventListener('click', () => {
+    console.log("CPU Usage : : ", process.getCPUUsage().percentCPUUsage);
+  });
+  const btnCrashApp = <HTMLButtonElement>document.getElementById('btnCrashApp');
+  btnCrashApp.addEventListener('click', () => {
+    process.crash();
+  });
+
+
+
   // const btnZoomUp = <HTMLButtonElement>document.getElementById("btnZoomUp");
   // const btnZoomDown = <HTMLButtonElement>document.getElementById("btnZoomDown");
   // const btnZoomReset = <HTMLButtonElement>document.getElementById("btnZoomReset");
@@ -38,20 +55,20 @@ window.addEventListener("DOMContentLoaded", () => {
   // });
 
 
-  const btnSendData = <HTMLButtonElement>document.getElementById('btnSendData');
-  btnSendData.addEventListener('click', () => {
-    ipcRenderer.send('test-channel-1', 'Hello World !');
-  });
+  // const btnSendData = <HTMLButtonElement>document.getElementById('btnSendData');
+  // btnSendData.addEventListener('click', () => {
+  //   ipcRenderer.send('test-channel-1', 'Hello World !');
+  // });
 
   // با این متد با هربار رویداد دستورات اجرا میشوند
-  ipcRenderer.on('test-channel1-res', function (e, args) {
-    console.log('test-channel1-res : ', args);
-  });
+  // ipcRenderer.on('test-channel1-res', function (e, args) {
+  //   console.log('test-channel1-res : ', args);
+  // });
 
   // با این متد دستورات فقط یک بار اجرا میشوند
-  ipcRenderer.once('test-channel1-res', function (e, args) {
-    console.log('test-channel1-res : ', args);
-  });
+  // ipcRenderer.once('test-channel1-res', function (e, args) {
+  //   console.log('test-channel1-res : ', args);
+  // });
 
 });
 
