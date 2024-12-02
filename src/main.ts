@@ -77,4 +77,4 @@ ipcMain.on('get-cursor-positaion-channel', function (e, args) {
   const cursorPosition = screen.getCursorScreenPoint();
   console.log(cursorPosition);
   e.sender.send('res-cursor-positaion-channel', cursorPosition);
-})
+});
