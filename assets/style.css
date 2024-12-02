@@ -46,3 +46,10 @@ button {
     object-fit: cover;
     border-radius: .2rem;
 }
+
+.row {
+    width: 100%;
+    padding: .5rem;
+    margin: 1rem auto;
+    border: 2px solid white;
+}

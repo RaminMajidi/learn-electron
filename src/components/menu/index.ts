@@ -1,11 +1,4 @@
-import { Menu, MenuItem } from "electron";
-
-// const mainMenu: Menu = new Menu();
-// const mainMenuItem = new MenuItem({
-//   label: "Home",
-//   submenu: [{ label: "item1" }, { label: "item2" }, { label: "item3" }],
-// });
-// mainMenu.append(mainMenuItem);
+import { Menu } from "electron";
 
 const mainMenu = Menu.buildFromTemplate([
   {

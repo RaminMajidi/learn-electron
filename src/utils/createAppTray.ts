@@ -1,13 +1,11 @@
 import { app, Menu, Tray } from "electron";
 import { join } from "path";
 import { mainWindow } from "../main";
-
 const trayMenu = Menu.buildFromTemplate([
   { label: "item1" },
   { label: "item2" },
   { label: "item3" },
 ]);
-
 function createAppTray() {
   const imagePath = join("assets", "icon.png");
   const appTry = new Tray(imagePath);
@@ -21,5 +19,4 @@ function createAppTray() {
     }
   });
 }
-
 export default createAppTray;
