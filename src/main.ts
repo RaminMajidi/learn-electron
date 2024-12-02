@@ -6,6 +6,7 @@ import {
   globalShortcut,
   powerMonitor,
   session,
+  ipcMain
 } from "electron";
 import mainMenu from "./components/menu";
 import * as path from "path";
@@ -119,3 +120,8 @@ function takeScreenShot() {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
+ipcMain.on('test-channel-1', function (e, args) {
+  console.log("test-channel-1 args :", args);
+  e.sender.send('test-channel1-res','data is recieved')
+});

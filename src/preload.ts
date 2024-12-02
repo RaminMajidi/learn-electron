@@ -37,10 +37,27 @@ window.addEventListener("DOMContentLoaded", () => {
   //   webFrame.setZoomFactor(1);
   // });
 
+
+  const btnSendData = <HTMLButtonElement>document.getElementById('btnSendData');
+  btnSendData.addEventListener('click', () => {
+    ipcRenderer.send('test-channel-1', 'Hello World !');
+  });
+
+  // با این متد با هربار رویداد دستورات اجرا میشوند
+  ipcRenderer.on('test-channel1-res', function (e, args) {
+    console.log('test-channel1-res : ', args);
+  });
+
+  // با این متد دستورات فقط یک بار اجرا میشوند
+  ipcRenderer.once('test-channel1-res', function (e, args) {
+    console.log('test-channel1-res : ', args);
+  });
+
 });
 
 
-ipcRenderer.on('screenshot-channel', (e, result) => {
-  const imgScreen = <HTMLImageElement>document.getElementById('screenShotImage');
-  imgScreen.setAttribute('src',result);
-})
+// ipcRenderer.on('screenshot-channel', (e, result) => {
+//   const imgScreen = <HTMLImageElement>document.getElementById('screenShotImage');
+//   imgScreen.setAttribute('src',result);
+// });
+
