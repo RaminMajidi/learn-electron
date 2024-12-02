@@ -1,29 +1,32 @@
 import {
   app,
   BrowserWindow,
-  desktopCapturer,
-  dialog,
-  globalShortcut,
-  powerMonitor,
-  session,
-  ipcMain
+  ipcMain,
+  screen
 } from "electron";
 import mainMenu from "./components/menu";
 import * as path from "path";
 import createAppTray from "./utils/createAppTray";
-import { messageBox, showDialog } from "./components/dialogs";
+
 
 export let mainWindow: BrowserWindow;
 
 function createWindow() {
+
+  // console.log(screen.getAllDisplays());
+  const primaryDisplay = screen.getPrimaryDisplay();
+
+
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    height: 600,
+    height: primaryDisplay.size.height,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
-    width: 800,
+    width: primaryDisplay.size.width / 2,
     title: "first page",
+    x: primaryDisplay.bounds.x,
+    y: primaryDisplay.bounds.y,
     backgroundColor: "#fcba03",
     show: false,
     alwaysOnTop: true
@@ -37,50 +40,8 @@ function createWindow() {
 
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();
-    setTimeout(() => {
-      takeScreenShot();
-    }, 2000)
   });
 
-  // cookie session
-  session.defaultSession.cookies
-    .set({
-      url: "http://localhost",
-      name: "FullName",
-      value: "ramin Majidi",
-    })
-    .then((res) => {
-      console.log("set cookie response :", res);
-      session.defaultSession.cookies.get({}).then((data) => {
-        console.log("data :", data);
-      });
-    });
-  // *****
-
-  // powerMonitor session
-  powerMonitor.on("suspend", () => {
-    console.log("This is suspend event on powerMonitor");
-  });
-
-  powerMonitor.on("resume", () => {
-    // if (mainWindow == null) {
-    //   createWindow();
-    // }
-    console.log("This is resume event on powerMonitor");
-  });
-  // *****
-
-  // globalShortcut session
-  globalShortcut.register("CommandOrControl + F", () => {
-    console.log("User pressed : Control + F");
-    globalShortcut.unregister("CommandOrControl + F");
-  });
-  // *******
-
-  mainWindow.webContents.on("did-finish-load", () => {
-    // showDialog();
-    // messageBox();
-  });
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
@@ -109,19 +70,11 @@ app.on("window-all-closed", () => {
 });
 
 
-function takeScreenShot() {
-  desktopCapturer.getSources({
-    types: ["screen"],
-    thumbnailSize: { width: 1366, height: 768 }
-  }).then(res => {
-    mainWindow.webContents.send('screenshot-channel', res[0].thumbnail.toDataURL());
-  })
-}
-
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
 
-ipcMain.on('test-channel-1', function (e, args) {
-  console.log("test-channel-1 args :", args);
-  e.sender.send('test-channel1-res','data is recieved')
-});
+ipcMain.on('get-cursor-positaion-channel', function (e, args) {
+  const cursorPosition = screen.getCursorScreenPoint();
+  console.log(cursorPosition);
+  e.sender.send('res-cursor-positaion-channel', cursorPosition);
+})
