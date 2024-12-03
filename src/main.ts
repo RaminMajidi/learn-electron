@@ -1,13 +1,13 @@
-import { app, BrowserWindow, dialog, globalShortcut, Menu, MenuItem,Tray,powerMonitor,session,desktopCapturer,ipcMain,screen } from "electron";
+import { app, BrowserWindow, dialog, globalShortcut, Menu, MenuItem, Tray, powerMonitor, session, desktopCapturer, ipcMain, screen } from "electron";
 import * as path from "path";
 
-let appTray,mainWindow:BrowserWindow;
+let appTray, mainWindow: BrowserWindow;
 
-var trayMenu=Menu.buildFromTemplate([
+var trayMenu = Menu.buildFromTemplate([
   {
-    label:'Item 1'
-  },{
-    label:'Item 2'
+    label: 'Item 1'
+  }, {
+    label: 'Item 2'
   }
 ])
 
@@ -53,21 +53,21 @@ var mainMenu = Menu.buildFromTemplate([{
 function createWindow() {
   // Create the browser window.
 
-  var primaryDisplay=screen.getPrimaryDisplay();
+  var primaryDisplay = screen.getPrimaryDisplay();
 
   mainWindow = new BrowserWindow({
     height: primaryDisplay.size.height,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      nodeIntegration:true
+      nodeIntegration: true
     },
-    width: primaryDisplay.size.width/2,
+    width: primaryDisplay.size.width / 2,
     title: 'First Test App',
     backgroundColor: '#fcba03',
     show: false,
     alwaysOnTop: false,
-    x:primaryDisplay.bounds.x,
-    y:primaryDisplay.bounds.y
+    x: primaryDisplay.bounds.x,
+    y: primaryDisplay.bounds.y
   });
 
   CreateAppTray();
@@ -80,6 +80,16 @@ function createWindow() {
 
   mainWindow.on('ready-to-show', function () {
     mainWindow.show();
+    let progressNumber: number = 0.01;
+    const progressBarInterval = setInterval(function () {
+      mainWindow.setProgressBar(progressNumber,{mode:""});
+      if (progressNumber <= 1) {
+        progressNumber += 0.01;
+      } else {
+        mainWindow.setProgressBar(-1);
+        clearInterval(progressBarInterval);
+      }
+    }, 75)
   });
 
   mainWindow.webContents.on('did-finish-load', function () {
@@ -90,20 +100,20 @@ function createWindow() {
 
 }
 
-function CreateAppTray(){
-  let imagePath:string=path.join('assets','app-icon.png');
-  appTray=new Tray(imagePath);
+function CreateAppTray() {
+  let imagePath: string = path.join('assets', 'app-icon.png');
+  appTray = new Tray(imagePath);
 
   appTray.setToolTip('My Application');
 
   appTray.setContextMenu(trayMenu);
 
-  appTray.on('click',function(e){
+  appTray.on('click', function (e) {
 
-    if(e.shiftKey){
+    if (e.shiftKey) {
       app.quit();
-    }else{
-      mainWindow.isVisible()?mainWindow.hide():mainWindow.show();
+    } else {
+      mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
     }
   });
 }
