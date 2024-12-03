@@ -4,18 +4,20 @@ import { ipcRenderer, nativeImage, clipboard, shell } from 'electron';
 
 window.addEventListener("DOMContentLoaded", () => {
 
- const btnOpenElectron = <HTMLButtonElement>document.getElementById("btnOpenElectron");
- const btnOpenImage = <HTMLButtonElement>document.getElementById("btnOpenImage");
- const btnOpenFolder = <HTMLButtonElement>document.getElementById("btnOpenFolder");
+  const btnShowNotification = <HTMLButtonElement>document.getElementById("btnShowNotification");
 
- btnOpenElectron.addEventListener('click',function(){
-  shell.openExternal('https://www.electronjs.org');
- });
- btnOpenImage.addEventListener('click',function(){
-  shell.openPath('my-picture.jpg');
- });
- btnOpenFolder.addEventListener('click',function(){
-  shell.showItemInFolder('E:\\exampel\\electron\\learn-electron\\my-picture.jpg');
- });
- 
+  btnShowNotification?.addEventListener('click', function () {
+    const notification = new Notification('My Notification', {
+      body: 'This is My Body Notification',
+    });
+    notification.onclick = (e)=>{
+      console.log("notifaction clicked");
+    };
+
+    notification.onclose = (e)=>{
+      console.log('notification closed');
+    }
+  
+  
+  });
 });
