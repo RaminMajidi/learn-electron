@@ -1,5 +1,11 @@
 import { app, BrowserWindow, dialog, globalShortcut, Menu, MenuItem, Tray, powerMonitor, session, desktopCapturer, ipcMain, screen } from "electron";
 import * as path from "path";
+import { writeFile } from "fs"
+// می توان اینگونه بیان کرد که این متد سرعت رندر کردن را کاهش میدهد
+// و
+app.disableHardwareAcceleration();
+
+
 
 let appTray, mainWindow: BrowserWindow;
 
@@ -59,7 +65,8 @@ function createWindow() {
     height: primaryDisplay.size.height,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: true
+      nodeIntegration: true,
+      offscreen: true,
     },
     width: primaryDisplay.size.width / 2,
     title: 'First Test App',
@@ -67,29 +74,30 @@ function createWindow() {
     show: false,
     alwaysOnTop: false,
     x: primaryDisplay.bounds.x,
-    y: primaryDisplay.bounds.y
+    y: primaryDisplay.bounds.y,
   });
 
   CreateAppTray();
 
 
   // and load the index.html of the app.
-  mainWindow.loadFile(path.join(__dirname, "../index.html"));
+  // mainWindow.loadFile(path.join(__dirname, "../index.html"));
+  mainWindow.loadURL('https://www.electronjs.org/');
 
   mainWindow.setMenu(mainMenu);
 
   mainWindow.on('ready-to-show', function () {
     mainWindow.show();
-    let progressNumber: number = 0.01;
-    const progressBarInterval = setInterval(function () {
-      mainWindow.setProgressBar(progressNumber,{mode:"indeterminate"});
-      if (progressNumber <= 1) {
-        progressNumber += 0.01;
-      } else {
-        mainWindow.setProgressBar(-1);
-        clearInterval(progressBarInterval);
-      }
-    }, 75)
+
+    let num = 0;
+    mainWindow.webContents.on('paint', (e, dirty, image) => {
+      const screenShot = image.toPNG();
+      writeFile(`E:/exampel/electron/learn-electron/monitoring/${num}_screenShot.png`, screenShot, () => {
+        console.log("screenShot is saved.");
+      });
+      num++;
+    })
+
   });
 
   mainWindow.webContents.on('did-finish-load', function () {
