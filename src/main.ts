@@ -82,7 +82,7 @@ function createWindow() {
     mainWindow.show();
     let progressNumber: number = 0.01;
     const progressBarInterval = setInterval(function () {
-      mainWindow.setProgressBar(progressNumber,{mode:""});
+      mainWindow.setProgressBar(progressNumber,{mode:"indeterminate"});
       if (progressNumber <= 1) {
         progressNumber += 0.01;
       } else {
