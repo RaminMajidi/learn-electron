@@ -1,15 +1,26 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
-
+import windowStateKeeper from "electron-window-state";
 
 let mainWindow: BrowserWindow;
 
 function createWindow() {
   // Create the browser window.
+
+  const state = windowStateKeeper({
+    defaultWidth: 500, defaultHeight: 650
+  });
+
+
   const mainWindow = new BrowserWindow({
-    height: 600,
-    width: 800,
-    title:"Bookmark Url",
+    x: state.x,
+    y: state.y,
+    height: state.width,
+    width: state.height,
+    minWidth: 350,
+    maxWidth: 650,
+    minHeight: 300,
+    title: "Bookmark Url",
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -17,6 +28,8 @@ function createWindow() {
 
   // and load the index.html of the app.
   mainWindow.loadFile(path.join(__dirname, "../index.html"));
+
+  state.manage(mainWindow);
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
@@ -46,3 +59,11 @@ app.on("window-all-closed", () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+
+
+ipcMain.on('add-url-channel', (e, url) => {
+  console.log("URL : ", url);
+  setTimeout(() => {
+    e.sender.send('add-url-result-channel', 'received url');
+  }, 1000)
+});
