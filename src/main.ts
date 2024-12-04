@@ -1,5 +1,23 @@
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
+import { Database } from "sqlite3";
+
+
+const db = new Database(path.join('E:\\exampel\\electron\\learn-electron\\src\\data', 'database.db'));
+
+db.serialize(() => {
+  // db.run('CREATE TABLE Users(firstName,lastName)');
+
+  // db.run('INSERT INTO Users VALUES(?,?)', ['ramin', 'majidi']);
+  // db.run('INSERT INTO Users VALUES(?,?)', ['daneal', 'halalan']);
+  // db.run('INSERT INTO Users VALUES(?,?)', ['ali', 'tehrani']);
+
+  db.each('SELECT * FROM Users', (err, row) => {
+    console.log(row);
+  })
+});
+db.close();
+
 
 function createWindow() {
   // Create the browser window.
