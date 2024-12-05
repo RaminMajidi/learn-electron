@@ -96,3 +96,17 @@ header {
 #btnAddItem{
     margin-left: 25px;
 }
+
+.readItem{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    border-bottom: 2px solid lightgray;
+    background-color: #fafafa;
+    padding: 10px;
+}
+
+.readItem img{
+    width: 20%;
+    margin-right: 25px;
+}

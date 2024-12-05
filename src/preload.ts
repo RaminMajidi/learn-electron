@@ -3,6 +3,22 @@
 import { ipcRenderer } from "electron";
 
 
+class Items {
+  private itemsList = <HTMLDivElement>document.getElementById("items");
+  addItem(item: { title: string, screenshot: string, url: string }) {
+      const newItem = document.createElement("div");
+      const img = document.createElement('img');
+      const h2 = document.createElement("h2");
+      newItem.setAttribute("class", "readItem");
+      img.setAttribute("src", item.screenshot);
+      h2.textContent = item.title;
+      newItem.appendChild(img);
+      newItem.appendChild(h2);
+      this.itemsList.appendChild(newItem);
+  }
+}
+
+
 
 function isValidURL(url: string) {
   const regex = /^(https?:\/\/)?((([a-zA-Z\d]([a-zA-Z\d-]*[a-zA-Z\d])*)\.)+[a-zA-Z]{2,}|localhost|\d{1,3}(\.\d{1,3}){3})(:\d+)?(\/[-a-zA-Z\d%_.~+]*)*(\?[;&a-zA-Z\d%_.~+=-]*)?(#[\-a-zA-Z\d_]*)?$/i;
@@ -31,7 +47,7 @@ window.addEventListener("DOMContentLoaded", () => {
   btnAddItem.addEventListener("click", () => {
     const url = inputUrl.value;
     const validation = isValidURL(url);
-    if (!url || !validation) {
+    if (!validation) {
       console.log("Url is invalid !");
     } else {
       ipcRenderer.send("add-url-channel", url);
@@ -65,11 +81,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
 
 
-  ipcRenderer.on("add-url-result-channel", (e, message) => {
-    console.log(message);
+  ipcRenderer.on("add-url-result-channel", (e, item) => {
+    console.log(item);
+    const itemList = new Items();
+    itemList.addItem(item);
     inputUrl.value = "";
     toggleModalButtons();
+    console.log("New Item Added");
   });
 
 });
-

@@ -64,10 +64,8 @@ app.on("window-all-closed", () => {
 
 
 ipcMain.on('add-url-channel', (e, url) => {
-  console.log("URL : ", url);
 
-  readItem(url, function (item: {}) {
-    console.log("item :", item);
+  readItem(url, function (item: { title: string, screenshot: string, url: string }) {
     e.sender.send('add-url-result-channel', item);
   });
 
