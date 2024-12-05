@@ -13,6 +13,7 @@ class Items {
     newItem.setAttribute("data-url", item.url);
     newItem.addEventListener("click", selectedItem);
     newItem.addEventListener("dblclick", openBookmarkUrl);
+    newItem.addEventListener("contextmenu", deleteBookmarkUrl);
     img.setAttribute("src", item.screenshot);
     h2.textContent = item.title;
     newItem.appendChild(img);
@@ -21,6 +22,7 @@ class Items {
   }
 }
 // end ***
+
 
 // start ***
 function selectedItem() {
@@ -33,12 +35,14 @@ function selectedItem() {
 }
 // end ***
 
+
 // start ***
 function isValidURL(url: string) {
   const regex = /^(https?:\/\/)?((([a-zA-Z\d]([a-zA-Z\d-]*[a-zA-Z\d])*)\.)+[a-zA-Z]{2,}|localhost|\d{1,3}(\.\d{1,3}){3})(:\d+)?(\/[-a-zA-Z\d%_.~+]*)*(\?[;&a-zA-Z\d%_.~+=-]*)?(#[\-a-zA-Z\d_]*)?$/i;
   return regex.test(url);
 }
 // end ***
+
 
 // start ***
 function openBookmarkUrl() {
@@ -58,26 +62,51 @@ function openBookmarkUrl() {
 }
 // end ***
 
+// start ***
+function deleteBookmarkUrl() {
+  const selected = document.getElementsByClassName("readItem selected")[0];
+
+  if (selected) {
+    const itemList = document.getElementById('items');
+    if (itemList) {
+      itemList.removeChild(selected);
+      const firstItem = document.getElementsByClassName('readItem')[0];
+      firstItem?.classList.add('selected');
+    }
+  }
+}
+// end ***
+
 
 window.addEventListener("DOMContentLoaded", () => {
+  // *** start Select Elements Item ***
   const btnShowModal = <HTMLButtonElement>document.getElementById("btnShowModal");
   const btnCloseModal = <HTMLButtonElement>document.getElementById("btnCloseModal");
   const btnAddItem = <HTMLButtonElement>document.getElementById("btnAddItem");
   const modal = <HTMLDivElement>document.getElementById("modal");
   const inputUrl = <HTMLInputElement>document.getElementById("inputUrl");
   const lblMessage = <HTMLLabelElement>document.getElementById("lblMessage");
+  const inputSearch = <HTMLInputElement>document.getElementById("inputSearch");
+  // *** end Select Elements Item ***
 
+  // *** start event btn Show Moadl ***
   btnShowModal.addEventListener("click", () => {
     modal.style.display = 'flex';
     inputUrl.focus();
   });
+  // *** end event btn Show Moadl ***
 
+
+  // *** start event btn Close Modal ***
   btnCloseModal.addEventListener("click", () => {
     inputUrl.value = "";
     lblMessage.innerText = "";
     modal.style.display = 'none';
   });
+  // *** end event btn Close Modal ***
 
+
+  // *** start event btn Add Item ***
   btnAddItem.addEventListener("click", () => {
     lblMessage.innerText = "";
     const url = inputUrl.value;
@@ -89,14 +118,19 @@ window.addEventListener("DOMContentLoaded", () => {
       toggleModalButtons();
     }
   });
+  // *** end event btn Add Item ***
 
+
+  // *** start event write url ***
   inputUrl.addEventListener('keyup', (e) => {
     if (e.key === "Enter") {
       btnAddItem.click();
     }
   });
+  // *** end event write url ***
 
 
+  // *** start toggle Modal ***
   function toggleModalButtons() {
     if (btnAddItem.disabled === true) {
       btnAddItem.innerText = "Add Item";
@@ -113,9 +147,10 @@ window.addEventListener("DOMContentLoaded", () => {
       inputUrl.readOnly = true;
     }
   }
+  // *** end toggle Modal ***
 
 
-
+  // *** start add new item channel ***
   ipcRenderer.on("add-url-result-channel", (e, item) => {
     console.log(item);
     const itemList = new Items();
@@ -134,9 +169,10 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
   });
+  // *** end add new item channel ***
 
 
-  const inputSearch = <HTMLInputElement>document.getElementById("inputSearch");
+  // *** start search event ***
   inputSearch.addEventListener("keyup", (e) => {
     const itemList = document.getElementsByClassName("readItem");
     Array.from(itemList).forEach((item) => {
@@ -145,5 +181,6 @@ window.addEventListener("DOMContentLoaded", () => {
       (<HTMLDivElement>item).style.display = hasMatch ? "flex" : "none";
     });
   });
+  // *** end search event ***
 
 });
