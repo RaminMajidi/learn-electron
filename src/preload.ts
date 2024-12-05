@@ -2,7 +2,7 @@
 // It has the same sandbox as a Chrome extension.
 import { ipcRenderer } from "electron";
 
-
+// start ***
 class Items {
   private itemsList = <HTMLDivElement>document.getElementById("items");
   addItem(item: { title: string, screenshot: string, url: string }) {
@@ -10,7 +10,9 @@ class Items {
     const img = document.createElement('img');
     const h2 = document.createElement("h2");
     newItem.setAttribute("class", "readItem");
+    newItem.setAttribute("data-url", item.url);
     newItem.addEventListener("click", selectedItem);
+    newItem.addEventListener("dblclick", openBookmarkUrl);
     img.setAttribute("src", item.screenshot);
     h2.textContent = item.title;
     newItem.appendChild(img);
@@ -18,8 +20,9 @@ class Items {
     this.itemsList.appendChild(newItem);
   }
 }
+// end ***
 
-// ***
+// start ***
 function selectedItem() {
   const selected = document.getElementsByClassName('readItem selected')[0];
 
@@ -28,14 +31,32 @@ function selectedItem() {
   }
   this.classList.add('selected');
 }
-// ***
+// end ***
 
-// ***
+// start ***
 function isValidURL(url: string) {
   const regex = /^(https?:\/\/)?((([a-zA-Z\d]([a-zA-Z\d-]*[a-zA-Z\d])*)\.)+[a-zA-Z]{2,}|localhost|\d{1,3}(\.\d{1,3}){3})(:\d+)?(\/[-a-zA-Z\d%_.~+]*)*(\?[;&a-zA-Z\d%_.~+=-]*)?(#[\-a-zA-Z\d_]*)?$/i;
   return regex.test(url);
 }
-// ***
+// end ***
+
+// start ***
+function openBookmarkUrl() {
+  const selected = document.getElementsByClassName('readItem selected')[0];
+  if (selected) {
+    const urlContetnt = selected.getAttribute('data-url');
+    const urlWindow = window.open(urlContetnt, "", `
+    maxWidth:2000,
+    maxHeight:2000,
+    width:1200,
+    height:800,
+    backgroundColor:#dedede,
+    nodeIntegration:0,
+    contextIsolation:1
+    `);
+  }
+}
+// end ***
 
 
 window.addEventListener("DOMContentLoaded", () => {
