@@ -1,8 +1,15 @@
 // All of the Node.js APIs are available in the preload process.
-
+// It has the same sandbox as a Chrome extension.
 import { ipcRenderer } from "electron";
 
-// It has the same sandbox as a Chrome extension.
+
+
+function isValidURL(url: string) {
+  const regex = /^(https?:\/\/)?((([a-zA-Z\d]([a-zA-Z\d-]*[a-zA-Z\d])*)\.)+[a-zA-Z]{2,}|localhost|\d{1,3}(\.\d{1,3}){3})(:\d+)?(\/[-a-zA-Z\d%_.~+]*)*(\?[;&a-zA-Z\d%_.~+=-]*)?(#[\-a-zA-Z\d_]*)?$/i;
+  return regex.test(url);
+}
+
+
 window.addEventListener("DOMContentLoaded", () => {
   const btnShowModal = <HTMLButtonElement>document.getElementById("btnShowModal");
   const btnCloseModal = <HTMLButtonElement>document.getElementById("btnCloseModal");
@@ -23,8 +30,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
   btnAddItem.addEventListener("click", () => {
     const url = inputUrl.value;
-    if (url) {
-      console.log(url);
+    const validation = isValidURL(url);
+    if (!url || !validation) {
+      console.log("Url is invalid !");
+    } else {
       ipcRenderer.send("add-url-channel", url);
       toggleModalButtons();
     }
@@ -43,24 +52,24 @@ window.addEventListener("DOMContentLoaded", () => {
       btnAddItem.disabled = false;
       btnAddItem.style.opacity = '1';
       btnCloseModal.style.display = "inline-block";
+      inputUrl.readOnly = false;
     } else {
       btnAddItem.innerText = "Adding...";
+      btnAddItem.style.cursor = "progress";
       btnAddItem.disabled = true;
       btnAddItem.style.opacity = '0.5';
       btnCloseModal.style.display = "none";
+      inputUrl.readOnly = true;
     }
   }
 
 
 
   ipcRenderer.on("add-url-result-channel", (e, message) => {
-    toggleModalButtons();
+    console.log(message);
     inputUrl.value = "";
-    alert(message);
+    toggleModalButtons();
   });
 
 });
-
-
-
 

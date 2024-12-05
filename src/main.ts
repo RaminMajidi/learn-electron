@@ -1,6 +1,8 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 import windowStateKeeper from "electron-window-state";
+import readItem from "./readItem";
+
 
 let mainWindow: BrowserWindow;
 
@@ -63,7 +65,10 @@ app.on("window-all-closed", () => {
 
 ipcMain.on('add-url-channel', (e, url) => {
   console.log("URL : ", url);
-  setTimeout(() => {
-    e.sender.send('add-url-result-channel', 'received url');
-  }, 1000)
+
+  readItem(url, function (item: {}) {
+    console.log("item :", item);
+    e.sender.send('add-url-result-channel', item);
+  });
+
 });
