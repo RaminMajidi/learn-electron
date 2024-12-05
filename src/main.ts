@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, session } from "electron";
 import * as path from "path";
 import windowStateKeeper from "electron-window-state";
 import readItem from "./readItem";
@@ -7,6 +7,14 @@ import readItem from "./readItem";
 let mainWindow: BrowserWindow;
 
 function createWindow() {
+
+  // clear cach
+  session.defaultSession.clearCache().then(() => {
+    console.log("Cache cleared!");
+  });
+  // ***
+
+
   // Create the browser window.
 
   const state = windowStateKeeper({

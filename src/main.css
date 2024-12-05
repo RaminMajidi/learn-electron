@@ -76,37 +76,54 @@ header {
     flex-wrap: wrap;
 }
 
-#inputUrl{
+#inputUrl {
     flex-grow: 1;
     width: 100%;
     margin: 0 25px 15px;
     padding: 10px;
 }
 
-#modal button{
+#modal button {
     padding: 10px;
 }
 
-#btnCloseModal{
+#modal #lblMessage {
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+}
+
+#btnCloseModal {
     background-color: white;
     color: black;
     margin-left: 15px;
 }
 
-#btnAddItem{
+#btnAddItem {
     margin-left: 25px;
 }
 
-.readItem{
+.readItem {
     display: flex;
     align-items: center;
     align-content: center;
     border-bottom: 2px solid lightgray;
     background-color: #fafafa;
     padding: 10px;
+    border-left: 10px solid lightgray;
+    transition: all .4s ease-in-out;
 }
 
-.readItem img{
+.readItem:hover {
+    background-color: #b9b9b9;
+}
+
+.readItem.selected {
+    border-left-color: dodgerblue;
+}
+
+.readItem img {
     width: 20%;
     margin-right: 25px;
 }
