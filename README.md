@@ -1,7 +1,4 @@
-> [!CAUTION]
-> This template is **deprecated**. To get started with an Electron + TypeScript project, we highly recommend starting with [Electron Forge](https://www.electronforge.io/)'s official TypeScript templates.
-
-# electron-quick-start-typescript
+# learn-electron
 
 **Clone and run for a quick way to see Electron in action.**
 
