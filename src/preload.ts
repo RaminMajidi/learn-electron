@@ -20,6 +20,26 @@ class Items {
     newItem.appendChild(h2);
     this.itemsList.appendChild(newItem);
   }
+
+  changeSelectedItem(dir: string) {
+    const selected = document.getElementsByClassName("readItem selected")[0];
+    if (selected) {
+      if (dir === "ArrowDown") {
+        const nextItem = selected.nextElementSibling;
+        if (nextItem) {
+          selected.classList.remove("selected");
+          nextItem.classList.add("selected");
+        }
+
+      } else if (dir === "ArrowUp") {
+        const previousItem = selected.previousElementSibling;
+        if (previousItem) {
+          selected.classList.remove("selected");
+          previousItem.classList.add("selected");
+        }
+      }
+    }
+  }
 }
 // end ***
 
@@ -87,6 +107,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const inputUrl = <HTMLInputElement>document.getElementById("inputUrl");
   const lblMessage = <HTMLLabelElement>document.getElementById("lblMessage");
   const inputSearch = <HTMLInputElement>document.getElementById("inputSearch");
+  const itemList = new Items();
   // *** end Select Elements Item ***
 
   // *** start event btn Show Moadl ***
@@ -153,7 +174,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // *** start add new item channel ***
   ipcRenderer.on("add-url-result-channel", (e, item) => {
     console.log(item);
-    const itemList = new Items();
+
     if (item.title === "Failed to load") {
       console.log("Failed to load");
       lblMessage.style.color = "red";
@@ -182,5 +203,13 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
   // *** end search event ***
+
+  // *** start kedown even ***
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+      itemList.changeSelectedItem(e.key);
+    }
+  })
+  // *** end kedown even ***
 
 });

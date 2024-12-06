@@ -9,9 +9,9 @@ let mainWindow: BrowserWindow;
 function createWindow() {
 
   // clear cach
-  session.defaultSession.clearCache().then(() => {
-    console.log("Cache cleared!");
-  });
+  // session.defaultSession.clearCache().then(() => {
+  //   console.log("Cache cleared!");
+  // });
   // ***
 
 
@@ -42,7 +42,7 @@ function createWindow() {
   state.manage(mainWindow);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 }
 
 // This method will be called when Electron has finished
